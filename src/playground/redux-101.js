@@ -1,6 +1,12 @@
 import { createStore } from 'redux';
 
-const store = createStore((state = { count: 0 }, action) => {
+
+// Reducers
+// Definition: actions describe the fact that something happened, but don't specify how the application's state changes in response.  This is a reducer's job.
+// 1. Reducers are pure functions - the output is only determined by its input
+// 2. Never change state or action
+
+const countReducer = (state = { count: 0 }, action) => {
     switch (action.type) {
         case 'INCREMENT':
             const incrementBy = typeof action.incrementBy === 'number' ? action.incrementBy : 1;
@@ -24,7 +30,9 @@ const store = createStore((state = { count: 0 }, action) => {
         default:
             return state;
     }
-});
+};
+
+const store = createStore(countReducer);
 
 store.subscribe(() => {
 
