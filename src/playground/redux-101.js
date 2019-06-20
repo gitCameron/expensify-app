@@ -1,14 +1,49 @@
 import { createStore } from 'redux';
 
+// Action Generators - functions that return action objects
+// const incrementCount = (payload = {}) => ({
+//     type: 'INCREMENT',
+//     incrementBy: typeof payload.incrementBy === 'number' ? payload.incrementBy : 1
+// });
+
+// const decrementCount = (payload = {}) => ({
+//     type: 'DECREMENT',
+//     decrementBy: typeof payload.decrementBy === 'number' ? payload.decrementBy : 1
+// });
+
+//////////////////////////////////////////////
+//  Destructured action generators from above
+//////////////////////////////////////////////
+
+const incrementCount = ({ incrementBy = 1 } = {}) => ({
+    type: 'INCREMENT',
+    incrementBy: incrementBy
+});
+
+const decrementCount = ({ decrementBy = 1} = {}) => ({
+    type: 'DECREMENT',
+    decrementBy: decrementBy
+});
+
+///////////////////////////////////////////////
+
+///////////////////////////////////////////////
+// Reset count prior to destructuring
+// This doesn't have a parameter because it always sets count back to 0.
+const resetCount = () => ({
+    type: 'RESET',
+});
+///////////////////////////////////////////////
+
 const store = createStore((state = { count: 0 }, action) => {
     switch (action.type) {
         case 'INCREMENT':
             return {
-                count: state.count + 1
+                count: state.count + action.incrementBy
             };
         case 'DECREMENT':
             return {
-                count: state.count - 1
+                count: state.count - action.decrementBy
             };
         case 'RESET':
             return {
@@ -27,36 +62,26 @@ console.log(store.getState());
 
 // Example using count:
 // I'd like to increment the count
-store.dispatch({
-    type: 'INCREMENT'
-});
-
-store.dispatch({
-    type: 'INCREMENT'
-});
-
-store.dispatch({
-    type: 'INCREMENT'
-});
+store.dispatch(incrementCount({incrementBy: 5}));
 
 console.log(store.getState());
 
-store.dispatch({
-    type: 'RESET'
-});
+store.dispatch(incrementCount());
 
 console.log(store.getState());
 
-store.dispatch({
-    type: 'DECREMENT'
-});
-
-// I'd like to reset the count to zero
+store.dispatch(incrementCount());
 
 console.log(store.getState());
 
-store.dispatch({
-    type: 'RESET'
-});
+store.dispatch(decrementCount({decrementBy: 10}));
+
+console.log(store.getState());
+
+store.dispatch(decrementCount());
+
+console.log(store.getState());
+
+store.dispatch(resetCount());
 
 console.log(store.getState());
